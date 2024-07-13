@@ -1,6 +1,6 @@
-#include "memWriteRead.h"
+#include "CPUModel.h"
 
-void memWriterReader::memWritingReading(){
+void CPU_model::send_data(){
 	sc_time blockedTime = sc_time(13, SC_NS);
 	sc_time pauseTime = sc_time(15, SC_NS);
 
@@ -33,7 +33,17 @@ void memWriterReader::memWritingReading(){
 	trans.set_data_ptr(data);
 	trans.set_data_length(104);
 
-	memWriterReaderSocket->b_transport(trans, delay);
+	cpu_send_socket->b_transport(trans, delay);
 
 
+}
+
+
+void CPU_model::b_transport(tlm::tlm_generic_payload & trans, sc_time& delay){
+	unsigned char* data = trans.get_data_ptr();
+	std::cout << "Initiator received data: ";
+	for (int i = 0; i < trans.get_data_length(); ++i) {
+		std::cout << static_cast<int>(*(data + i)) << " ";
+	}
+	std::cout << std::endl;
 }

@@ -1,7 +1,7 @@
 
-#include "memoryUnit.h"
+#include "Accelarator.h"
 
-void memoryUnit::b_transport(tlm::tlm_generic_payload& gotThis, sc_time& delayValue){
+void accelarator::b_transport(tlm::tlm_generic_payload& gotThis, sc_time& delayValue){
 
 	int A[8];
 	int B[8][12];
@@ -40,4 +40,19 @@ void memoryUnit::b_transport(tlm::tlm_generic_payload& gotThis, sc_time& delayVa
 
 	
 };
+
+
+void accelarator::send_data_thread() {
+
+	// Create a transaction to send data to the initiator
+	tlm::tlm_generic_payload trans;
+	sc_time delay = SC_ZERO_TIME;
+	trans.set_command(tlm::TLM_WRITE_COMMAND);
+	trans.set_data_ptr((unsigned char*)C);
+	trans.set_data_length(12);
+
+	// Send the transaction to the initiator
+	acc_receive_socket->b_transport(trans, delay);
+
+}
 
