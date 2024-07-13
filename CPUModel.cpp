@@ -29,7 +29,6 @@ void CPU_model::send_data(){
 
 	}
 
-	trans.set_command(tlm::TLM_WRITE_COMMAND);
 	trans.set_data_ptr(data);
 	trans.set_data_length(104);
 
@@ -41,7 +40,7 @@ void CPU_model::send_data(){
 
 void CPU_model::b_transport(tlm::tlm_generic_payload & trans, sc_time& delay){
 	unsigned char* data = trans.get_data_ptr();
-	std::cout << "Initiator received data: ";
+	std::cout << "CPU received result at " << sc_time_stamp() << endl;
 	for (int i = 0; i < trans.get_data_length(); ++i) {
 		std::cout << static_cast<int>(*(data + i)) << " ";
 	}
